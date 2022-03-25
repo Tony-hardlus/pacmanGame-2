@@ -1,17 +1,5 @@
-"""Pacman, classic arcade game.
-
-Exercises
-
-1. Change the board.
-2. Change the number of ghosts.
-3. Change where pacman starts.
-4. Make the ghosts faster/slower.
-5. Make the ghosts smarter.
-"""
-
 from random import choice
 from turtle import *
-
 from freegames import floor, vector
 
 state = {'score': 0}
@@ -133,13 +121,28 @@ def move():
     for point, course in ghosts:
         if valid(point + course):
             point.move(course)
+        # VRDL: Para darle inteligencia a los pacman
         else:
-            options = [
-                vector(5, 0),
-                vector(-5, 0),
-                vector(0, 5),
-                vector(0, -5),
-            ]
+            # Si el pacman está a la derecha,
+            if (pacman.x>point.x):
+            # Y si el pacman está arriba,
+                if (pacman.y>point.y):
+                    # Desplaza a la derecha y hacia arriba
+                    options = [vector(5,0),vector(0,5)]
+                    # Else, desplaza a la derecha y hacia abajo
+                else:
+                    options = [vector(5,0), vector(0,-5)]
+                    
+            # Se implica que está a la izquierda       
+            else: 
+                # Si el pacman está arriba,
+                if (pacman.y>point.y):
+                    # Desplaza a la izquierda hacia arriba
+                    options = [vector(-5,0),vector(0,5)]
+                else:
+                    #else, desplaza a la izquierda hacia abajo
+                    options = [vector(-5,0),vector(0,-5)]
+
             plan = choice(options)
             course.x = plan.x
             course.y = plan.y
